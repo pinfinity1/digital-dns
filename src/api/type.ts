@@ -5,9 +5,9 @@ export interface LoginRequest {
 }
 
 export interface SuccessResponse {
-    data:any;
-    isSuccess : string;
-    jsonValidationMessage:null;
-    message:string;
+    data: undefined;
+    isSuccess: string;
+    jsonValidationMessage: null;
+    message: string;
     statusCode: number;
 }

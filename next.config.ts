@@ -1,7 +1,25 @@
-import type { NextConfig } from "next";
+import type {NextConfig} from 'next';
+import withPWA from 'next-pwa';
+
 
 const nextConfig: NextConfig = {
-  /* config options here */
+    distDir: "build",
+    reactStrictMode: true,
+    compiler: {
+        removeConsole: process.env.NODE_ENV === "production",
+    },
+    experimental: {
+        turbo: {
+            rules: {
+                "*.mdx": ["mdx-loader"],
+            },
+        },
+    },
 };
 
-export default nextConfig;
+export default withPWA({
+    dest: "public",
+    disable: process.env.NODE_ENV === "development",
+    register: true,
+    skipWaiting: true,
+})(nextConfig);

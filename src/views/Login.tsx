@@ -3,12 +3,9 @@ import {useState} from "react";
 import {useForm} from "react-hook-form";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage,} from "@/components/ui/form";
 import {Input} from "@/components/ui/input";
-import {useMutation} from "@tanstack/react-query";
-import {LoginUser} from "@/api/login";
 import {Eye, EyeOff} from "lucide-react";
-import {toast} from "sonner";
 import {Button} from "@/components/ui/button";
-import {signIn} from "next-auth/react";
+import {useSearchParams} from "next/navigation";
 
 
 type FormData = {
@@ -17,6 +14,8 @@ type FormData = {
 };
 
 export default function Login () {
+    const searchParams = useSearchParams();
+    console.log(searchParams.get('token'));
     const [showPassword, setShowPassword] = useState<boolean>(false);
     
     const form = useForm<FormData>({
@@ -26,35 +25,10 @@ export default function Login () {
         },
     });
     
-    const {mutate: sendLoginForm} = useMutation({
-        mutationFn: LoginUser,
-        onSuccess: async (dataResp) => {
-            const {data, isSuccess, message} = dataResp;
-            
-            if(isSuccess) {
-                toast("Login successful");
-                
-                signIn("credentials", {
-                    token: data.token,
-                    userName: data.userName,
-                    redirect: false,
-                });
-            } else {
-                toast(message || "Login failed");
-            }
-        },
-        onError: () => {
-            toast("Something went wrong");
-        },
-    });
     
     const loginSubmit = async (data: FormData) => {
         if(data.username !== 0 && data.password !== "") {
-            sendLoginForm({
-                chatId: +data.username,
-                email: "",
-                password: data.password,
-            });
+            console.log(data);
         }
     };
     
