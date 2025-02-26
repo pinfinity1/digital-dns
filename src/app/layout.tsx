@@ -7,8 +7,8 @@ import Providers from "@/components/Providers";
 
 const SansWeb = localFont({
     src: [
-        {path: "./fonts/SansWeb.ttf", weight: "400", style: "normal"},
-        {path: "./fonts/SansNum.ttf", weight: "400", style: "normal"},
+        {path: "../../public/fonts/SansWeb.ttf", weight: "400", style: "normal"},
+        {path: "../../public/fonts/SansNum.ttf", weight: "400", style: "normal"},
     ],
     variable: "--font-sans-web",
 });
