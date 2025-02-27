@@ -1,10 +1,14 @@
 import React from "react";
+import Providers from "@/components/Providers";
+import AuthGuard from "@/hocs/AuthGuard";
 
 
-export default function PrivateLayout ({children}: { children: React.ReactNode }) {
+export default function layout ({children}: { children: React.ReactNode }) {
     return (
-        <>
-            {children}
-        </>
+        <Providers>
+            <AuthGuard>
+                {children}
+            </AuthGuard>
+        </Providers>
     )
 }

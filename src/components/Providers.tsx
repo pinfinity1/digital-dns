@@ -1,6 +1,7 @@
 import React from "react";
 import QueryProvider from "@/components/QueryProvider";
 import {Toaster} from "sonner";
+import {NextAuthProvider} from "@/contexts/nextAuthProvider";
 
 
 type Props = {
@@ -11,11 +12,12 @@ const Providers = async (props: Props) => {
     const {children} = props;
     
     return (
-        <QueryProvider>
-            {/*<InstallButton/>*/}
-            {children}
-            <Toaster/>
-        </QueryProvider>
+        <NextAuthProvider>
+            <QueryProvider>
+                {children}
+                <Toaster richColors style={{fontFamily: `var(--font-sans-web)`}}/>
+            </QueryProvider>
+        </NextAuthProvider>
     );
 };
 
