@@ -3,6 +3,7 @@ import type {Metadata, Viewport} from "next";
 import "./globals.css";
 import localFont from "next/font/local";
 import Providers from "@/components/Providers";
+import {auth} from "@/libs/auth";
 
 
 const SansWeb = localFont({
@@ -33,11 +34,14 @@ export const viewport: Viewport = {
     viewportFit: "cover",
 };
 
-export default function RootLayout ({
-                                        children,
-                                    }: Readonly<{
+export default async function RootLayout ({
+                                              children,
+                                          }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const session = await auth()
+    console.log(session
+    )
     return (
         <html lang="fa"
               dir="rtl"
@@ -50,7 +54,7 @@ export default function RootLayout ({
             <link rel="apple-touch-icon" href="/icons/Digital-512.png"/>
         </head>
         <body
-            className={`antialiased`}
+            className={`${SansWeb.className} antialiased`}
         >
         <Providers>
             {children}

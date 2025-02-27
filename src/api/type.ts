@@ -5,7 +5,7 @@ export interface LoginRequest {
 }
 
 export interface SuccessResponse {
-    data: undefined;
+    data?: undefined;
     isSuccess: string;
     jsonValidationMessage: null;
     message: string;

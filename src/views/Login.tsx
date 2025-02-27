@@ -5,7 +5,10 @@ import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage,} from "@
 import {Input} from "@/components/ui/input";
 import {Eye, EyeOff} from "lucide-react";
 import {Button} from "@/components/ui/button";
-import {useSearchParams} from "next/navigation";
+import {signIn} from "next-auth/react";
+import Image from "next/image";
+import {toast} from "sonner";
+import {useRouter} from "next/navigation";
 
 
 type FormData = {
@@ -14,9 +17,12 @@ type FormData = {
 };
 
 export default function Login () {
-    const searchParams = useSearchParams();
-    console.log(searchParams.get('token'));
+    // const searchParams = useSearchParams();
+    // console.log(searchParams.get('token'));
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [submitLoading, setSubmitLoading] = useState<boolean>(false);
+    
+    const router = useRouter();
     
     const form = useForm<FormData>({
         defaultValues: {
@@ -28,7 +34,34 @@ export default function Login () {
     
     const loginSubmit = async (data: FormData) => {
         if(data.username !== 0 && data.password !== "") {
-            console.log(data);
+            setSubmitLoading(true);
+            const chatId = +data.username
+            const password = data.password;
+            
+            const loginData = {
+                email: "",
+                chatId: chatId,
+                password: password,
+            }
+            
+            try {
+                const res = await signIn("credentials", {
+                    ...loginData,
+                    redirect: false
+                })
+                
+                if(res?.error) {
+                    toast.error("ورود ناموفق")
+                } else {
+                    toast.success("ورود موفق")
+                    router.push("/")
+                }
+            } catch (error) {
+                console.error(error)
+                toast.warning("خطا در اتصال به سرور. لطفاً دوباره تلاش کنید.");
+            } finally {
+                setSubmitLoading(false);
+            }
         }
     };
     
@@ -37,9 +70,13 @@ export default function Login () {
             <form
                 onSubmit={form.handleSubmit(loginSubmit)}
                 autoComplete={"off"}
-                className="w-full sm:max-w-[400px] space-y-6  md:shadow-xl md:border border-gray-100 rounded-2xl py-8 px-6"
+                className="w-full sm:max-w-[400px] space-y-6  md:shadow-2xl sm:border border-gray-100 rounded-2xl py-8 px-6"
             >
-                <p className="text-center">خوش آمدید</p>
+                <div className={"flex justify-center items-center"}>
+                    <Image src={"/icons/Digital-512.png"} alt={"logo"} width={80} height={80} priority/>
+                </div>
+                {/*<p className="text-center">خوش آمدید</p>*/}
+                
                 <FormField
                     control={form.control}
                     name="username"
@@ -94,7 +131,7 @@ export default function Login () {
                         </FormItem>
                     )}
                 />
-                <Button type="submit" className={"w-full"}>
+                <Button type="submit" className={"w-full"} disabled={submitLoading}>
                     ورود
                 </Button>
             </form>
