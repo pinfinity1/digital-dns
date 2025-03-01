@@ -3,17 +3,21 @@ import CredentialProvider from 'next-auth/providers/credentials'
 import NextAuth from "next-auth";
 import client from "@/libs/axios";
 
-//
-// interface LoginResponse {
-//     isSuccess: boolean;
-//     statusCode: number;
-//     message: string;
-//     jsonValidationMessage: string;
-//     data: {
-//         token: string;
-//         userName: string;
-//     };
-// }
+
+declare module "next-auth" {
+    interface User {
+        accessToken?: string;
+        username?: string;
+    }
+    
+    interface Session {
+        user: {
+            accessToken?: string;
+            username?: string;
+        };
+    }
+}
+
 
 export const {handlers, signIn, signOut, auth} = NextAuth({
     providers: [
@@ -78,7 +82,7 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
         strategy: 'jwt',
         
         // ** Seconds - How long until an idle session expires and is no longer valid
-        maxAge: 30 * 24 * 60 * 60 // ** 30 days
+        maxAge: 60 * 60 // ** 30 days
     },
     
     // ** Please refer to https://next-auth.js.org/configuration/options#pages for more `pages` options
@@ -88,19 +92,19 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
     
     // ** Please refer to https://next-auth.js.org/configuration/options#callbacks for more `callbacks` options
     callbacks: {
-        async jwt ({token, user}: any) {
+        async jwt ({token, user}) {
             if(user) {
                 token.id = user.id;
-                token.accessToken = user.accessToken;
-                token.username = user.username;
+                token.accessToken = user.accessToken as string;
+                token.username = user.username as string;
             }
             return token;
         },
-        async session ({session, token}: any) {
+        async session ({session, token}) {
             session.user = {
                 ...session.user,
-                username: token.username,
-                accessToken: token.accessToken
+                username: token.username as string,
+                accessToken: token.accessToken as string
             };
             return session;
         }

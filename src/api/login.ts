@@ -1,8 +1,20 @@
 import client from "@/libs/axios";
-import {LoginRequest, SuccessResponse} from "@/api/type";
+import {SuccessResponse} from "@/types/common/BaseType";
 
 
-export const LoginUser = async (payload: LoginRequest): Promise<SuccessResponse> => {
+interface LoginRequest {
+    chatId: number;
+    password: string;
+    email: string
+}
+
+
+type LoginResponse = {
+    token: string;
+    userName: string;
+}
+
+export const LoginUser = async (payload: LoginRequest): Promise<SuccessResponse<LoginResponse>> => {
     const {data} = await client.post('/User/Login', payload);
     return data;
 }
