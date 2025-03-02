@@ -43,7 +43,7 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
                     }
                     
                     
-                    const {data} = await client.post('/User/Login', {...loginValue});
+                    const {data} = await client.post('/api/v1/User/Login', {...loginValue});
                     
                     
                     if( !data.isSuccess) {
@@ -108,5 +108,6 @@ export const {handlers, signIn, signOut, auth} = NextAuth({
             };
             return session;
         }
-    }
+    },
+    trustHost: true
 })

@@ -3,7 +3,6 @@ import type {Metadata, Viewport} from "next";
 import "./globals.css";
 import localFont from "next/font/local";
 import Providers from "@/components/Providers";
-import {auth} from "@/libs/auth";
 
 
 const SansWeb = localFont({
@@ -39,8 +38,8 @@ export default async function RootLayout ({
                                           }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const session = await auth()
-    console.log(session);
+    // const session = await auth()
+    // console.log(session);
     return (
         <html lang="fa"
               dir="rtl"

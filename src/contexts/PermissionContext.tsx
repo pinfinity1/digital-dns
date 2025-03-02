@@ -1,30 +1,40 @@
 "use client"
 
 import React, {createContext, useEffect, useState} from "react";
-import {AllPermissions, GetAllPermissions} from "@/api/permissions";
 import {useQuery} from "@tanstack/react-query";
+import {getApiV1AuthorizationGetUserRolePermissionsOptions} from "@/client/@tanstack/react-query.gen";
+import {GetApiV1AuthorizationGetUserRolePermissionsResponse, UserRolePermissionsDtoListApiResult} from "@/client";
 
 
 interface PermissionsContextType {
-    permissions: AllPermissions[];
+    permissions: GetApiV1AuthorizationGetUserRolePermissionsResponse;
 }
 
-const PermissionContext = createContext<PermissionsContextType>({permissions: []})
+const PermissionContext = createContext<PermissionsContextType | undefined>(undefined)
 
 export const PermissionProvider = ({children}: { children: React.ReactNode }) => {
-    const [permissions, setPermissions] = useState<AllPermissions[]>([]);
+    const [permissions, setPermissions] = useState<UserRolePermissionsDtoListApiResult>();
+    
     
     const {data} = useQuery({
-        queryKey: ["permissions"],
-        queryFn: GetAllPermissions,
-    });
+        ...getApiV1AuthorizationGetUserRolePermissionsOptions()
+    })
     
     useEffect(() => {
         if(data) {
-            setPermissions(data.data);
+            try {
+                const parsedData = typeof data === "string" ? JSON.parse(data) : data;
+                if(parsedData?.data) {
+                    setPermissions(parsedData?.data?.[0]);
+                }
+            } catch (error) {
+                console.error("Error parsing permissions data:", error);
+            }
         }
     }, [data]);
     
+    
+    console.log(permissions)
     
     return (
         <PermissionContext.Provider value={{permissions}}>
