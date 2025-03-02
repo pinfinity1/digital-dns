@@ -52,7 +52,7 @@ export default async function RootLayout ({
             <link rel="apple-touch-icon" href="/icons/Digital-512.png"/>
         </head>
         <body
-            className={`${SansWeb.className} antialiased`}
+            className={`${SansWeb.className} antialiased px-3`}
         >
         <Providers>
             {children}

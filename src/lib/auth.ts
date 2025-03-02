@@ -1,7 +1,7 @@
 // Third-party Imports
 import CredentialProvider from 'next-auth/providers/credentials'
 import NextAuth from "next-auth";
-import client from "@/libs/axios";
+import client from "@/lib/axios";
 
 
 declare module "next-auth" {

@@ -8,12 +8,14 @@ import {GetApiV1AuthorizationGetUserRolePermissionsResponse, UserRolePermissions
 
 interface PermissionsContextType {
     permissions: GetApiV1AuthorizationGetUserRolePermissionsResponse;
+    role: { roleId: number, roleName: string }
 }
 
-const PermissionContext = createContext<PermissionsContextType | undefined>(undefined)
+export const PermissionContext = createContext<PermissionsContextType | undefined>(undefined)
 
 export const PermissionProvider = ({children}: { children: React.ReactNode }) => {
     const [permissions, setPermissions] = useState<UserRolePermissionsDtoListApiResult>();
+    const [role, setRole] = useState<{ roleId: number, roleName: string }>({roleId: null, roleName: ""});
     
     
     const {data} = useQuery({
@@ -25,7 +27,11 @@ export const PermissionProvider = ({children}: { children: React.ReactNode }) =>
             try {
                 const parsedData = typeof data === "string" ? JSON.parse(data) : data;
                 if(parsedData?.data) {
-                    setPermissions(parsedData?.data?.[0]);
+                    setPermissions(parsedData?.data?.[0]?.permissions);
+                    setRole({
+                        roleId: parsedData?.data?.[0]?.roleId,
+                        roleName: parsedData?.data?.[0]?.roleName,
+                    });
                 }
             } catch (error) {
                 console.error("Error parsing permissions data:", error);
@@ -34,10 +40,8 @@ export const PermissionProvider = ({children}: { children: React.ReactNode }) =>
     }, [data]);
     
     
-    console.log(permissions)
-    
     return (
-        <PermissionContext.Provider value={{permissions}}>
+        <PermissionContext.Provider value={{permissions, role}}>
             {children}
         </PermissionContext.Provider>
     )

@@ -1,4 +1,4 @@
-import client from "@/libs/axios";
+import client from "@/lib/axios";
 import {SuccessResponse} from "@/types/common/BaseType";
 import {getSession} from "next-auth/react";
 

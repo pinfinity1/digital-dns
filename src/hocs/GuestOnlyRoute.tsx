@@ -1,6 +1,6 @@
 import React from "react";
 import {redirect} from 'next/navigation'
-import {auth} from "@/libs/auth";
+import {auth} from "@/lib/auth";
 
 
 const GuestOnlyRoute = async ({children}: { children: React.ReactNode }) => {
