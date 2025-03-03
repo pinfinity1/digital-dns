@@ -1,9 +1,10 @@
 "use client"
 
 import React, {createContext, useEffect, useState} from "react";
+import {GetApiV1AuthorizationGetUserRolePermissionsResponse, UserRolePermissionsDtoListApiResult} from "@/client";
 import {useQuery} from "@tanstack/react-query";
 import {getApiV1AuthorizationGetUserRolePermissionsOptions} from "@/client/@tanstack/react-query.gen";
-import {GetApiV1AuthorizationGetUserRolePermissionsResponse, UserRolePermissionsDtoListApiResult} from "@/client";
+import {Loading} from "@/components/loading/Loading";
 
 
 interface PermissionsContextType {
@@ -15,12 +16,13 @@ export const PermissionContext = createContext<PermissionsContextType | undefine
 
 export const PermissionProvider = ({children}: { children: React.ReactNode }) => {
     const [permissions, setPermissions] = useState<UserRolePermissionsDtoListApiResult>();
-    const [role, setRole] = useState<{ roleId: number, roleName: string }>({roleId: null, roleName: ""});
+    const [role, setRole] = useState<{ roleId: number | null, roleName: string }>({roleId: null, roleName: ""});
     
     
-    const {data} = useQuery({
-        ...getApiV1AuthorizationGetUserRolePermissionsOptions()
-    })
+    const {data, isLoading, error} = useQuery(
+        getApiV1AuthorizationGetUserRolePermissionsOptions()
+    );
+    
     
     useEffect(() => {
         if(data) {
@@ -34,10 +36,19 @@ export const PermissionProvider = ({children}: { children: React.ReactNode }) =>
                     });
                 }
             } catch (error) {
-                console.error("Error parsing permissions data:", error);
+                console.error("Error parse data:", error);
             }
         }
     }, [data]);
+    
+    
+    if(isLoading) {
+        return <Loading/>;
+    }
+    
+    if(error) {
+        return <div>Error loading permissions: {error instanceof Error ? error.message : "Unknown error"}</div>;
+    }
     
     
     return (

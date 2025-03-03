@@ -6,6 +6,7 @@ import {PermissionContext} from "@/contexts/PermissionContext";
 export const usePermission = () => {
     const {permissions} = useContext(PermissionContext);
     
+    
     function hasPermission (permissionName: string): boolean {
         if(Array.isArray(permissions)) {
             return permissions.some(
@@ -15,5 +16,6 @@ export const usePermission = () => {
         return false;
     }
     
-    return hasPermission;
+    return {hasPermission};
 }
+

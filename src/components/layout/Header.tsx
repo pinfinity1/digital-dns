@@ -43,7 +43,7 @@ export const Header = () => {
     return (
         <div
             className={"w-full max-w-[1280px] rounded-b-lg md:rounded-b-3xl border border-colors-grey-shade-65 shadow border-t-0 flex items-center justify-between bg-black/10 p-3 md:py-4 md:px-6"}>
-            <div>logo</div>
+            <Link href={"/"} className={"text-md lg:text-xl font-bold tracking-wide"}>لوگو</Link>
             <NavigationMenu>
                 <NavigationMenuList>
                     <NavigationMenuItem>
@@ -74,7 +74,7 @@ export const Header = () => {
                                             <User className={"w-4 h-4 md:w-5 md:h-5"}/>
                                         </NavigationMenuLink>
                                     </Link>
-                                    <Link href="/transaction" legacyBehavior passHref>
+                                    <Link href="/transactions" legacyBehavior passHref>
                                         <NavigationMenuLink
                                             className={`${navigationMenuTriggerStyle()} !w-full !justify-end gap-1 text-[14px] md:text-[16px] hover:bg-black hover:text-white rounded-md !transition-all !duration-200 `}>
                                             تراکنش ها

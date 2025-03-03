@@ -1,9 +1,17 @@
+"use client"
+
+
+import PaymentInformation from "@/components/PaymentInformation";
+
+
 export default function HomePage () {
+    // const {hasPermission} = usePermission()
     
     
     return (
         <div>
-            Home page
+            {/*{hasPermission("GetTransactionDetails") && <PaymentInformation/>}*/}
+            <PaymentInformation/>
         </div>
     )
 }

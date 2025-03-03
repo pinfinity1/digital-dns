@@ -11,7 +11,9 @@ export default function layout ({children}: { children: React.ReactNode }) {
             <AuthGuard>
                 <PermissionProvider>
                     <Header/>
-                    {children}
+                    <main className={"w-full max-w-[1280px] flex-1 py-5"}>
+                        {children}
+                    </main>
                 </PermissionProvider>
             </AuthGuard>
         </Providers>
