@@ -11,9 +11,11 @@ import EditAdminAgentInfo from "@/components/home/EditAdminAgentInfo";
 
 export default function AdminAgentInformation () {
     const [adminAgentInfo, setAdminAgentInfo] = useState<AgentDto>();
+    const [openDialog, setOpenDialog] = useState<boolean>(false);
     
-    const {data, isLoading, error} = useQuery(
-        getApiV1AgentGetAdminAgentInformationOptions()
+    const {data, isLoading, error} = useQuery({
+            ...getApiV1AgentGetAdminAgentInformationOptions()
+        }
     )
     
     useEffect(() => {
@@ -52,15 +54,15 @@ export default function AdminAgentInformation () {
         <div className={"col-span-12 sm:col-span-6 xl:col-span-3 w-full h-fit border rounded-xl shadow space-y-1"}>
             <div className={"w-full h-[52px] flex items-center justify-between border-b px-6 shadow-sm"}>
                 <h3 className={"font-semibold "}>اطلاعات نمایندگی</h3>
-                <Dialog>
+                <Dialog open={openDialog} onOpenChange={setOpenDialog}>
                     <DialogTrigger asChild>
-                        <Button variant="outline" className={"rounded-lg"}><FilePenLine/></Button>
+                        <Button variant="outline" className={"rounded-lg"} onClick={() => setOpenDialog(prev => !prev)}><FilePenLine/></Button>
                     </DialogTrigger>
                     <DialogContent aria-describedby={undefined}>
                         <DialogHeader>
                             <DialogTitle>ویرایش اطلاعات نمایندگی</DialogTitle>
                         </DialogHeader>
-                        <EditAdminAgentInfo/>
+                        <EditAdminAgentInfo setOpenDialog={setOpenDialog}/>
                     </DialogContent>
                 </Dialog>
             </div>

@@ -122,7 +122,6 @@ export default function SalesGrowth () {
                             className={"hidden sm:block"}
                             tickFormatter={(value) => {
                                 const date = new Date(value)
-                                console.log(date, value)
                                 return date.toLocaleDateString("fa-IR", {
                                     month: "numeric",
                                     day: "numeric",

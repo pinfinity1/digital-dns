@@ -25,23 +25,31 @@ import {signOut} from "next-auth/react";
 import {toast} from "sonner";
 import {useRouter} from "next/navigation";
 import {useQuery} from "@tanstack/react-query";
-import {getApiV1UserGetInformationOptions} from "@/client/@tanstack/react-query.gen";
-import {UserInformationDto} from "@/client";
+import {
+    getApiV1NotificationGetNotificationsOptions,
+    getApiV1UserGetInformationOptions
+} from "@/client/@tanstack/react-query.gen";
+import {NotificationDto, UserInformationDto} from "@/client";
 
 
 export const Header = () => {
     const [userInfo, setUserInfo] = useState<UserInformationDto>(null);
+    const [notifications, setNotifications] = useState<NotificationDto[]>();
     const router = useRouter()
     
-    const {data, isLoading, error} = useQuery(
+    const {data: userData, isLoading: userDataLoading, error: userDataError} = useQuery(
         getApiV1UserGetInformationOptions()
+    )
+    
+    const {data: notifData, error: notifDataError} = useQuery(
+        getApiV1NotificationGetNotificationsOptions()
     )
     
     
     useEffect(() => {
-        if(data) {
+        if(userData) {
             try {
-                const parsedData = typeof data === "string" ? JSON.parse(data) : data;
+                const parsedData = typeof userData === "string" ? JSON.parse(userData) : userData;
                 if(parsedData?.data) {
                     setUserInfo(parsedData?.data);
                 }
@@ -49,10 +57,20 @@ export const Header = () => {
                 console.error("Error parse data:", error);
             }
         }
-    }, [data]);
+        if(notifData) {
+            try {
+                const parsedData = typeof notifData === "string" ? JSON.parse(notifData) : notifData;
+                if(parsedData?.data) {
+                    setNotifications(parsedData?.data);
+                }
+            } catch (error) {
+                console.error("Error parse data:", error);
+            }
+        }
+    }, [userData, notifData]);
     
     
-    if(isLoading) {
+    if(userDataLoading) {
         return (
             <div
                 className={"w-full max-w-[1280px] h-[62px] rounded-b-lg md:rounded-b-3xl border border-colors-grey-shade-65 shadow border-t-0 flex items-center justify-between bg-black/10 p-3 md:py-4 md:px-6"}>
@@ -66,8 +84,8 @@ export const Header = () => {
         )
     }
     
-    if(error) {
-        return <div>Error {error instanceof Error ? error.message : "Unknown error"}</div>;
+    if(userDataError) {
+        return <div>Error {userDataError instanceof Error ? userDataError.message : "Unknown error"}</div>;
     }
     
     
@@ -85,7 +103,7 @@ export const Header = () => {
     return (
         <div
             className={"w-full max-w-[1280px] rounded-b-lg md:rounded-b-3xl border border-colors-grey-shade-65 shadow border-t-0 flex items-center justify-between bg-black/10 p-3 md:py-4 md:px-6"}>
-            <Link href={"/"} className={"text-md lg:text-xl font-bold tracking-wide"}>{userInfo?.botName}</Link>
+            <Link href={"/"} className={"text-md lg:text-xl font-extrabold tracking-wide"}>{userInfo?.botName}</Link>
             <NavigationMenu>
                 <NavigationMenuList>
                     <NavigationMenuItem>
@@ -103,8 +121,8 @@ export const Header = () => {
                                         <div className={"flex items-center gap-2 text-sm"}>
                                             <p>موجودی:</p>
                                             <p className={"flex items-center gap-2"}>
+                                                <span className={"text-[12px] italic text-black/80"}>تومان</span>
                                                 {userInfo?.balance.toLocaleString("fa-IR")}
-                                                <span>تومان</span>
                                             </p>
                                         </div>
                                     </div>
@@ -145,8 +163,11 @@ export const Header = () => {
                         </NavigationMenuContent>
                     </NavigationMenuItem>
                     <NavigationMenuItem>
-                        <NavigationMenuTrigger className={"px-1 bg-transparent"}>
+                        <NavigationMenuTrigger className={"relative px-1 bg-transparent"}>
                             <Bell size={20}/>
+                            {notifications?.length !== 0 &&
+                                <span
+                                    className={"absolute top-0 left-1 w-2 h-2 rounded-full bg-black/70 animate-bounce"}></span>}
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
                             <div className={"w-[280px] md:w-[356px] flex flex-col items-center"}>
