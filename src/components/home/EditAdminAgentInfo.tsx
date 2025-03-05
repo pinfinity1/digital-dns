@@ -37,7 +37,7 @@ export default function EditAdminAgentInfo () {
     if(isLoading) return (<div className={"w-full h-[100px]"}><Loading/></div>)
     
     if(error) {
-        return <div>Error loading permissions: {error instanceof Error ? error.message : "Unknown error"}</div>;
+        return <div>Error {error instanceof Error ? error.message : "Unknown error"}</div>;
     }
     
     

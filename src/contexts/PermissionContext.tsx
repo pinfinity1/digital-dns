@@ -47,7 +47,7 @@ export const PermissionProvider = ({children}: { children: React.ReactNode }) =>
     }
     
     if(error) {
-        return <div>Error loading permissions: {error instanceof Error ? error.message : "Unknown error"}</div>;
+        return <div>Error {error instanceof Error ? error.message : "Unknown error"}</div>;
     }
     
     

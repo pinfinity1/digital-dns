@@ -60,90 +60,91 @@ export default function SalesGrowth () {
         }
     }, [data]);
     
-    // if(isLoading) {
-    //     return (
-    //         <div className={"col-span-12 lg:col-span-6 xl:col-span-3"}>
-    //             <Loading/>
-    //         </div>
-    //     )
-    //
-    // }
+    if(isLoading) {
+        return (
+            <div
+                className={"col-span-12 lg:col-span-8 xl:col-span-6 w-full h-[280px] flex flex-col border rounded-xl shadow space-y-1"}>
+                <div className={"w-full h-[52px] flex items-center justify-between border-b px-6 shadow-sm"}>
+                    <h3 className={"w-24 h-8 rounded-md bg-black/30 animate-pulse"}></h3>
+                </div>
+                <div className={"w-full flex-1 flex items-center justify-center"}>
+                    <Loading/>
+                </div>
+            </div>
+        )
+        
+    }
     
     if(error) {
-        return <div>Error loading permissions: {error instanceof Error ? error.message : "Unknown error"}</div>;
+        return <div>Error {error instanceof Error ? error.message : "Unknown error"}</div>;
     }
     
     
     return (
         <div
             className={"col-span-12 lg:col-span-8 xl:col-span-6 w-full border rounded-xl shadow space-y-1"}>
-            {isLoading ? (<Loading/>) : (
-                <>
-                    <div className={"w-full h-[52px] flex items-center justify-between border-b px-6 shadow-sm"}>
-                        <h3 className={"font-semibold"}>رشد فروش</h3>
+            <div className={"w-full h-[52px] flex items-center justify-between border-b px-6 shadow-sm"}>
+                <h3 className={"font-semibold"}>رشد فروش</h3>
+            </div>
+            <div className={"px-8 py-4 w-full h-full"}>
+                <div className={"sm:flex items-center gap-8 text-[14px] sm:text-base"}>
+                    <div className={"mb-4 flex items-center gap-1 sm:gap-1"}>
+                        <p>فروش کل:</p>
+                        <p>{totalProfit?.toLocaleString("fa-IR")} <span className={""}>تومان</span></p>
                     </div>
-                    <div className={"px-8 py-4 w-full h-full"}>
-                        <div className={"sm:flex items-center gap-8 text-[14px] sm:text-base"}>
-                            <div className={"mb-4 flex items-center gap-1 sm:gap-1"}>
-                                <p>فروش کل:</p>
-                                <p>{totalProfit?.toLocaleString("fa-IR")} <span className={""}>تومان</span></p>
-                            </div>
-                            <div className={"mb-4 flex items-center gap-1 sm:gap-1"}>
-                                <p>سود فروش:</p>
-                                <p className={`${growPercent > 0 ? "text-green-600" : "text-red-600"} flex items-center`}>
-                                    <span className={"pl-1"}>%</span>
-                                    {growPercent?.toFixed(2)}
-                                    <span>
+                    <div className={"mb-4 flex items-center gap-1 sm:gap-1"}>
+                        <p>سود فروش:</p>
+                        <p className={`${growPercent > 0 ? "text-green-600" : "text-red-600"} flex items-center`}>
+                            <span className={"pl-1"}>%</span>
+                            {growPercent?.toFixed(2)}
+                            <span>
                             {growPercent > 0 ? <ChevronsUp size={14} className={"mb-0.5"}/> :
                                 <ChevronsDown size={14} className={"mb-0.5"}/>}
                             </span>
-                                </p>
-                            </div>
-                        </div>
-                        <ChartContainer className={"w-full max-h-[320px]"} config={chartConfig}>
-                            <LineChart
-                                accessibilityLayer
-                                data={chartData}
-                                margin={{
-                                    left: 12,
-                                    right: 12,
-                                }}
-                            >
-                                <CartesianGrid vertical={false}/>
-                                <XAxis
-                                    dataKey="createDate"
-                                    tickLine={false}
-                                    axisLine={false}
-                                    tickMargin={8}
-                                    className={"hidden sm:block"}
-                                    tickFormatter={(value) => {
-                                        const date = new Date(value)
-                                        console.log(date, value)
-                                        return date.toLocaleDateString("fa-IR", {
-                                            month: "numeric",
-                                            day: "numeric",
-                                        })
-                                    }}
-                                />
-                                <ChartTooltip
-                                    cursor={false}
-                                    content={<ChartTooltipContent
-                                        className="w-[150px]"
-                                        labelFormatter={(value) => new Date(value).toLocaleDateString("fa-IR")}
-                                        indicator={"line"}/>}
-                                />
-                                <Line
-                                    dataKey="profit"
-                                    type="natural"
-                                    stroke="#000"
-                                    strokeWidth={2}
-                                />
-                            </LineChart>
-                        </ChartContainer>
+                        </p>
                     </div>
-                </>
-            )}
-        
+                </div>
+                <ChartContainer className={"w-full max-h-[320px]"} config={chartConfig}>
+                    <LineChart
+                        accessibilityLayer
+                        data={chartData}
+                        margin={{
+                            left: 12,
+                            right: 12,
+                        }}
+                    >
+                        <CartesianGrid vertical={false}/>
+                        <XAxis
+                            dataKey="createDate"
+                            tickLine={false}
+                            axisLine={false}
+                            tickMargin={8}
+                            className={"hidden sm:block"}
+                            tickFormatter={(value) => {
+                                const date = new Date(value)
+                                console.log(date, value)
+                                return date.toLocaleDateString("fa-IR", {
+                                    month: "numeric",
+                                    day: "numeric",
+                                })
+                            }}
+                        />
+                        <ChartTooltip
+                            cursor={false}
+                            content={<ChartTooltipContent
+                                className="w-[150px]"
+                                labelFormatter={(value) => new Date(value).toLocaleDateString("fa-IR")}
+                                indicator={"line"}/>}
+                        />
+                        <Line
+                            dataKey="profit"
+                            type="natural"
+                            stroke="#000"
+                            strokeWidth={2}
+                        />
+                    </LineChart>
+                </ChartContainer>
+            </div>
         </div>
     )
 }

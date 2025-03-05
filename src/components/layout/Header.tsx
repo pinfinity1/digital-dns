@@ -8,7 +8,7 @@ import {
     NavigationMenuTrigger,
     navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu"
-import React from "react";
+import React, {useEffect, useState} from "react";
 import {
     Bell,
     CircleCheckBig,
@@ -24,10 +24,52 @@ import Link from "next/link";
 import {signOut} from "next-auth/react";
 import {toast} from "sonner";
 import {useRouter} from "next/navigation";
+import {useQuery} from "@tanstack/react-query";
+import {getApiV1UserGetInformationOptions} from "@/client/@tanstack/react-query.gen";
+import {UserInformationDto} from "@/client";
 
 
 export const Header = () => {
+    const [userInfo, setUserInfo] = useState<UserInformationDto>(null);
     const router = useRouter()
+    
+    const {data, isLoading, error} = useQuery(
+        getApiV1UserGetInformationOptions()
+    )
+    
+    
+    useEffect(() => {
+        if(data) {
+            try {
+                const parsedData = typeof data === "string" ? JSON.parse(data) : data;
+                if(parsedData?.data) {
+                    setUserInfo(parsedData?.data);
+                }
+            } catch (error) {
+                console.error("Error parse data:", error);
+            }
+        }
+    }, [data]);
+    
+    
+    if(isLoading) {
+        return (
+            <div
+                className={"w-full max-w-[1280px] h-[62px] rounded-b-lg md:rounded-b-3xl border border-colors-grey-shade-65 shadow border-t-0 flex items-center justify-between bg-black/10 p-3 md:py-4 md:px-6"}>
+                <div className={"w-28 h-8 rounded-md bg-black/30 animate-pulse"}></div>
+                <div className={"flex items-center gap-2"}>
+                    <div className={"w-6 h-6 rounded-md bg-black/30 animate-pulse"}></div>
+                    <div className={"w-6 h-6 rounded-md bg-black/30 animate-pulse"}></div>
+                    <div className={"w-6 h-6 rounded-md bg-black/30 animate-pulse"}></div>
+                </div>
+            </div>
+        )
+    }
+    
+    if(error) {
+        return <div>Error {error instanceof Error ? error.message : "Unknown error"}</div>;
+    }
+    
     
     const handleSignOut = async () => {
         try {
@@ -43,7 +85,7 @@ export const Header = () => {
     return (
         <div
             className={"w-full max-w-[1280px] rounded-b-lg md:rounded-b-3xl border border-colors-grey-shade-65 shadow border-t-0 flex items-center justify-between bg-black/10 p-3 md:py-4 md:px-6"}>
-            <Link href={"/"} className={"text-md lg:text-xl font-bold tracking-wide"}>لوگو</Link>
+            <Link href={"/"} className={"text-md lg:text-xl font-bold tracking-wide"}>{userInfo?.botName}</Link>
             <NavigationMenu>
                 <NavigationMenuList>
                     <NavigationMenuItem>
@@ -56,17 +98,20 @@ export const Header = () => {
                                     <div dir={"rtl"}>
                                         <div className={"flex items-center gap-2"}>
                                             <p>نام کاربری:</p>
-                                            <p>منشسیرم</p>
+                                            <p>{userInfo?.firstName}</p>
                                         </div>
                                         <div className={"flex items-center gap-2 text-sm"}>
                                             <p>موجودی:</p>
-                                            <p>۱۰۰۰ تومان</p>
+                                            <p className={"flex items-center gap-2"}>
+                                                {userInfo?.balance.toLocaleString("fa-IR")}
+                                                <span>تومان</span>
+                                            </p>
                                         </div>
                                     </div>
                                     <div className={"w-[100px] h-[100px] rounded-full bg-black"}>
                                     </div>
                                 </li>
-                                <div className={"space-y-2"}>
+                                <div className={"flex flex-col items-center space-y-2"}>
                                     <Link href="/profile" legacyBehavior passHref>
                                         <NavigationMenuLink
                                             className={`${navigationMenuTriggerStyle()} !w-full !justify-end gap-1 text-[14px] md:text-[16px] hover:bg-black hover:text-white rounded-md !transition-all !duration-200 `}>
@@ -87,6 +132,13 @@ export const Header = () => {
                                         <p>خروج</p>
                                         <LogOut className={"w-4 h-4 md:w-5 md:h-5"}/>
                                     </div>
+                                    <Link
+                                        className={"font-light text-[12px] text-center hover:text-blue-600 pt-3 transition-all duration-200"}
+                                        href={userInfo?.botLink}>برای
+                                        رفتن به ربات
+                                        کلیک
+                                        کنید
+                                    </Link>
                                 </div>
                             
                             </ul>

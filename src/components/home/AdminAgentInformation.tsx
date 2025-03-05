@@ -31,14 +31,20 @@ export default function AdminAgentInformation () {
     
     if(isLoading) {
         return (
-            <div className={"col-span-12 lg:col-span-8 xl:col-span-3 h-[200px]"}>
-                <Loading/>
+            <div
+                className={"col-span-12 sm:col-span-6 xl:col-span-3 w-full h-[200px] flex flex-col border rounded-xl shadow space-y-1"}>
+                <div className={"w-full h-[52px] flex items-center justify-between border-b px-6 shadow-sm"}>
+                    <h3 className={"w-24 h-8 rounded-md bg-black/30 animate-pulse"}></h3>
+                </div>
+                <div className={"w-full flex-1 flex items-center justify-center"}>
+                    <Loading/>
+                </div>
             </div>
         )
     }
     
     if(error) {
-        return <div>Error loading permissions: {error instanceof Error ? error.message : "Unknown error"}</div>;
+        return <div>Error {error instanceof Error ? error.message : "Unknown error"}</div>;
     }
     
     
