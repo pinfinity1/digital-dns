@@ -30,7 +30,7 @@ export default function PaymentInformation () {
     if(isLoading) {
         return (
             <div
-                className={"col-span-12 sm:col-span-6 xl:col-span-3 w-full h-[200px] flex flex-col border rounded-xl shadow space-y-1"}>
+                className={"col-span-6 xl:col-span-3 w-full h-[200px] flex flex-col border rounded-xl shadow space-y-1"}>
                 <div className={"w-full h-[52px] flex items-center justify-between border-b px-6 shadow-sm"}>
                     <h3 className={"w-24 h-8 rounded-md bg-black/30 animate-pulse"}></h3>
                 </div>
@@ -46,7 +46,7 @@ export default function PaymentInformation () {
     }
     
     return (
-        <div className={"col-span-12 sm:col-span-6 xl:col-span-3 w-full h-fit border rounded-xl shadow space-y-1"}>
+        <div className={"col-span-6 xl:col-span-3 w-full h-fit border rounded-xl shadow space-y-1"}>
             <div className={"w-full h-[52px] flex items-center justify-between border-b px-6 shadow-sm"}>
                 <h3 className={"font-semibold"}>اطلاعات پرداخت</h3>
             </div>

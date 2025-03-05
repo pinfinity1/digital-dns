@@ -93,9 +93,6 @@ export default function Login () {
                                         type={"number"}
                                         placeholder="نام کاربری"
                                         value={field.value === 0 ? "" : field.value}
-                                        className={
-                                            "w-full py-5 text-base rounded-xl border focus:outline-none"
-                                        }
                                     />
                                 </FormControl>
                                 <FormMessage/>
@@ -115,9 +112,6 @@ export default function Login () {
                                             type={showPassword ? "text" : "password"}
                                             placeholder="رمز عبور"
                                             value={field.value === "" ? "" : field.value}
-                                            className={
-                                                "w-full py-5 text-base rounded-xl border focus:outline-none"
-                                            }
                                         />
                                         <span
                                             onClick={() => setShowPassword((prev) => !prev)}
