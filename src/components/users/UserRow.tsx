@@ -22,9 +22,12 @@ import { Button } from '../ui/button';
 import { Badge } from '../ui/badge'
 import { Label } from '../ui/label'
 import { Input } from '../ui/input';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 export default function UserRow({ data }) {
 
+    const [dialogStep, setDialogStep] = useState("main");
 
 
     return (<>
@@ -54,15 +57,27 @@ export default function UserRow({ data }) {
                                 <EyeIcon className={"w-4 h-4 md:w-5 md:h-5 text-slate-400 cursor-pointer hover:text-slate-600"} />
 
                 </DialogTrigger>
-                <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="sm:max-w-[900px]">
+                <DialogContent onOpenAutoFocus={(e) => e.preventDefault()} className="sm:max-w-[900px] h-[600px] overflow-hidden">
+
                     <DialogHeader>
                         <DialogTitle className='border-b-2 w-1/4 pb-2'>
-                            مشخصات کاربر
+                        {dialogStep === "main" ? "مشخصات کاربر" : "افزودن توضیحات"}
                         </DialogTitle>
                         <DialogDescription className='pt-2 text-base'>
                             آیدی: {data.id}
                         </DialogDescription>
                     </DialogHeader>
+
+                    {dialogStep === "main" && (
+                        <motion.div
+                        key="main"
+                        initial={{ x: 0, opacity: 1 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        exit={{ x: "-100%", opacity: 0 }}
+                        transition={{ duration: 0.4 }}
+                        className="absolute pt-24 px-6 w-full"
+                    >
+
                     <div className="grid grid-cols-4 gap-4 py-4 text-slate-500">
                         <div className="grid grid-cols-2 items-center gap-2">
                             <Label htmlFor="username" className="text-right whitespace-nowrap"> نام کاربر </Label>
@@ -150,10 +165,11 @@ export default function UserRow({ data }) {
                             <Input readOnly id="description" value={data.description ? data.description : "ثبت نشده"} className='col-span-2' />
                         </div>
                     </div>
+
                     <div>
                         <h3 className='border-b-2 w-1/4 pb-2'>عملیات ها</h3>
                         <div className='flex flex-wrap gap-2 p-2'>
-                            <Button> افزودن توضیحات</Button>
+                            <Button onClick={() => setDialogStep("addDescription")}> افزودن توضیحات</Button>
                             <Button>  ارسال پیام به کاربر</Button>
                             <Button>  غیرفعال کردن کاربر</Button>
                             <Button> افزودن موجودی</Button>
@@ -166,10 +182,34 @@ export default function UserRow({ data }) {
                         </div>
 
                     </div>
+                    
                     {/* <DialogFooter>
                         <Button type="submit">Save changes</Button>
                     </DialogFooter> */}
+                    </motion.div>)}
+
+                    {dialogStep === "addDescription" && (
+                             <motion.div
+                             key="addDescription"
+                             initial={{ x: "100%", opacity: 0 }}
+                             animate={{ x: 0, opacity: 1 }}
+                             exit={{ x: "100%", opacity: 0 }}
+                             transition={{ duration: 0.4 }}
+                             className="absolute pt-24 px-6 w-full"
+                         >
+                            <div className="py-4 text-slate-500">
+                                <Label htmlFor="note" className="text-right">توضیحات</Label>
+                                <Input id="note" placeholder="توضیحات را وارد کنید..." className="w-full mt-2" />
+                            </div>
+                            <div className="flex justify-between">
+                                <Button variant="outline" onClick={() => setDialogStep("main")}>بازگشت</Button>
+                                <Button>ذخیره</Button>
+                            </div>
+                        </motion.div>
+                    )}
                 </DialogContent>
+
+
             </Dialog>
 
         </div>
