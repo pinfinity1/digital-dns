@@ -19,6 +19,7 @@ import {
     PaginationPrevious,
 } from "@/components/ui/pagination"
 
+
 export default function AgentUsersList() {
 
     const usertypes = [
@@ -102,17 +103,19 @@ export default function AgentUsersList() {
                     <h3 className={"font-semibold"}>کاربران</h3>
                 </div>
                 <div className='flex flex-col items-center justify-center gap-4'>
-                    <div className='w-full flex justify-start items-center gap-2 mt-4 px-4'>
 
+                    <div className='w-full flex justify-start items-center gap-2 mt-4 px-4'>
                         <Label className='whitespace-nowrap'>نوع کاربر </Label>
                         <Combobox value={value} onChange={setValue} Searchable={false} items={usertypes} placeholder={"انتخاب کنید"} label={"نوع کاربر"} />
                         <Label className='whitespace-nowrap mr-4' htmlFor="search">جستجوی نام کاربری</Label>
                         <Input value={searchTerm} onChange={(e) => handleSearchInput(e)} className='w-48' id='search' type="text" placeholder="تایپ کنید..." />
                     </div>
+
+
                     <div className={" w-full h-full  rounded-xl  space-y-1"}>
                         <div className="w-full ">
                             <div className="w-full items-center text-slate-400 font-semibold h-16 px-4 grid grid-cols-[.5fr_2fr_2fr_1fr_1fr_.5fr_.5fr] gap-4 bg-slate-200">
-                                <User className={"w-4 h-4 md:w-5 md:h-5"} />
+                                <div className='flex justify-center'><User className={"w-4 h-4 md:w-5 md:h-5"} /></div>
                                 <h3 className='flex justify-center'> نام کاربری</h3>
                                 <h3 className='flex justify-center'> آیدی تلگرام</h3>
                                 <h3 className='flex justify-center'> نوع کاربر</h3>
@@ -125,11 +128,12 @@ export default function AgentUsersList() {
                                 <div
                                     key={item.id}
                                     className="w-full h-16 grid items-center text-slate-500 border-b grid-cols-[.5fr_2fr_2fr_1fr_1fr_.5fr_.5fr] gap-4 px-4 even:bg-gray-100 odd:bg-white hover:bg-green-100 transition-all duration-300">
-                                    <UserRow data={item} />
+                                    <UserRow data={item}/>
                                 </div>))}
                         </div>
                     </div>
 
+                    
                     <Pagination style={{ display: paginationConfig.show ? "flex" : "none" }} className='mb-2'>
                         <PaginationContent>
                             <div className={`${paginationConfig.page == 1 ? "bg-white" : ""}`} >
