@@ -104,6 +104,7 @@ export const Header = () => {
         <div
             className={"w-full max-w-[1280px] rounded-b-lg md:rounded-b-3xl border border-colors-grey-shade-65 shadow border-t-0 flex items-center justify-between bg-black/10 p-3 md:py-4 md:px-6"}>
             <Link href={"/"} className={"text-md lg:text-xl font-extrabold tracking-wide"}>{userInfo?.botName}</Link>
+            
             <NavigationMenu>
                 <NavigationMenuList>
                     <NavigationMenuItem>
