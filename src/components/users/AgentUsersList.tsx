@@ -98,21 +98,18 @@ export default function AgentUsersList() {
 
     return (
         <>
-            <div className={"col-span-6 w-full h-full border rounded-xl shadow space-y-1 overflow-hidden"}>
-                <div className={"w-full h-[52px] flex items-center justify-between border-b px-6 shadow-sm"}>
+            <div className={"col-span-6 w-full h-full pt-4 space-y-4 "}>
+               {/*  <div className={"w-full h-[52px] flex items-center justify-between border-b px-6 shadow-sm"}>
                     <h3 className={"font-semibold"}>کاربران</h3>
-                </div>
-                <div className='flex flex-col items-center justify-center gap-4'>
-
-                    <div className='w-full flex justify-start items-center gap-2 mt-4 px-4'>
+                </div> */}
+                     <div className='w-full flex justify-start items-center gap-2 px-4'>
                         <Label className='whitespace-nowrap'>نوع کاربر </Label>
                         <Combobox value={value} onChange={setValue} Searchable={false} items={usertypes} placeholder={"انتخاب کنید"} label={"نوع کاربر"} />
                         <Label className='whitespace-nowrap mr-4' htmlFor="search">جستجوی نام کاربری</Label>
                         <Input value={searchTerm} onChange={(e) => handleSearchInput(e)} className='w-48' id='search' type="text" placeholder="تایپ کنید..." />
                     </div>
-
-
-                    <div className={" w-full h-full  rounded-xl  space-y-1"}>
+                <div className='flex flex-col items-center justify-center space-y-2 space-x-0 gap-4 border rounded-xl shadow overflow-hidden'>
+                    <div className={" w-full h-full rounded-xl "}>
                         <div className="w-full ">
                             <div className="w-full items-center text-slate-400 font-semibold h-16 px-4 grid grid-cols-[.5fr_2fr_2fr_1fr_1fr_.5fr_.5fr] gap-4 bg-slate-200">
                                 <div className='flex justify-center'><User className={"w-4 h-4 md:w-5 md:h-5"} /></div>
@@ -134,9 +131,11 @@ export default function AgentUsersList() {
                     </div>
 
                     
+                </div>
+
                     <Pagination style={{ display: paginationConfig.show ? "flex" : "none" }} className='mb-2'>
                         <PaginationContent>
-                            <div className={`${paginationConfig.page == 1 ? "bg-white" : ""}`} >
+                            <div className={`${paginationConfig.page == 1 ? "" : ""}`} >
                                 <PaginationItem>
                                     <PaginationPrevious href="#" />
                                 </PaginationItem>
@@ -152,7 +151,6 @@ export default function AgentUsersList() {
                             </PaginationItem>
                         </PaginationContent>
                     </Pagination>
-                </div>
 
             </div>
         </>
