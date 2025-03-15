@@ -4,7 +4,7 @@ import UserRow from './UserRow';
 import { Loading } from '../loading/Loading';
 import { UserDto } from '@/client';
 import { useQuery } from '@tanstack/react-query';
-import { getApiV1UserGetAgentUsersOptions, getApiV1UserGetAgentUsersFilterOptions } from '@/client/@tanstack/react-query.gen';
+import { getApiV1UserGetAgentUsersFilterOptions } from '@/client/@tanstack/react-query.gen';
 import { Combobox } from '../ui/Combobox';
 import { User } from 'lucide-react';
 import { Label } from '../ui/label';
@@ -125,7 +125,7 @@ export default function AgentUsersList() {
                                 <div
                                     key={item.id}
                                     className="w-full h-16 grid items-center text-slate-500 border-b grid-cols-[.5fr_2fr_2fr_1fr_1fr_.5fr_.5fr] gap-4 px-4 even:bg-gray-100 odd:bg-white hover:bg-green-100 transition-all duration-300">
-                                    <UserRow data={item}/>
+                                    <UserRow rowData={item}/>
                                 </div>))}
                         </div>
                     </div>
