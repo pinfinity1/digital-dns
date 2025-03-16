@@ -133,7 +133,7 @@ export default function UserRow({ rowData }: { rowData: UserDto }) {
         },
     });
 
-    
+
     return (
         <>
             <div className='flex justify-center'>
@@ -330,6 +330,7 @@ export default function UserRow({ rowData }: { rowData: UserDto }) {
                             </motion.div>
                         )}
 
+{/* didn't find the query */}
                         {dialogStep === "sendMessage" && (
                             <motion.div
                                 key="sendMessage"
@@ -343,9 +344,13 @@ export default function UserRow({ rowData }: { rowData: UserDto }) {
                                     <Label htmlFor="Message" className="text-right"> پیام </Label>
                                     <Input id="Message" placeholder="پیام را وارد کنید..." className="w-full mt-2" />
                                 </div>
-                                <div className="flex justify-between">
+                                <div className="flex justify-between mb-4">
                                     <Button variant="outline" onClick={() => dialogPageHandler("main")}>بازگشت</Button>
                                     <Button>ارسال</Button>
+                                </div>
+                                <div className="w-full h-[310px] space-y-4 p-4 bg-slate-100 rounded-xl">
+                                    <h3 className="border-b-[1px] w-1/4 pb-2">تاریخچه پیام های ارسالی</h3>
+                                    <div className="w-full h-[200px] flex items-center justify-center text-slate-300">پیامی برای نمایش وجود ندارد.</div>
                                 </div>
                             </motion.div>
                         )}
