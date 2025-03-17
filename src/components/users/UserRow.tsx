@@ -42,7 +42,7 @@ export default function UserRow({ rowData }: { rowData: UserDto }) {
     const [dialogTitle, setDialogTitle] = useState<string>("مشخصات کاربر");
     const [inputValues, setInputValues] = useState<{ [key: string]: string }>({
         description: rowData.description,
-
+        isBlocked: rowData.isBlocked.toString(),
     });
 
 
@@ -96,7 +96,7 @@ export default function UserRow({ rowData }: { rowData: UserDto }) {
     }
 
 
-    const inputHandler = (e: React.ChangeEvent<HTMLInputElement>,id:string): void => {
+    const inputHandler = (e: React.ChangeEvent<HTMLInputElement>, id: string): void => {
         setInputValues({
             ...inputValues,
             [id]: e.target.value,
@@ -271,7 +271,7 @@ export default function UserRow({ rowData }: { rowData: UserDto }) {
                                     </div>
                                     <div className="grid grid-cols-2 items-center gap-2">
                                         <Label htmlFor="status" className="text-right whitespace-nowrap">وضعیت</Label>
-                                        <Input readOnly id="status" value={rowData.isBlocked == false ? "فعال" : "غیرفعال"} className='col-span-2' />
+                                        <Input readOnly id="status" value={inputValues.isBlocked == 'false' ? "فعال" : "غیرفعال"} className='col-span-2' />
                                     </div>
                                     <div className="grid grid-cols-2 items-center gap-2">
                                         <Label htmlFor="balance" className="text-right whitespace-nowrap">موجودی</Label>
@@ -320,7 +320,14 @@ export default function UserRow({ rowData }: { rowData: UserDto }) {
                                     <input type="hidden" {...register("id")} value={rowData.id.toString()} />
                                     <div className="py-4 text-slate-500">
                                         <Label htmlFor="description" className="text-right">توضیحات</Label>
-                                        <Input id="description" type={"text"} {...register("description")} value={inputValues.description} onChange={(e) => inputHandler(e,"description")} placeholder="توضیحات را وارد کنید..." className="w-full mt-2" />
+                                        <Input
+                                            id="description"
+                                            type={"text"}
+                                            {...register("description")}
+                                            value={inputValues.description}
+                                            onChange={(e) => inputHandler(e, "description")}
+                                            placeholder="توضیحات را وارد کنید..."
+                                            className="w-full mt-2" />
                                     </div>
                                     <div className="flex justify-between">
                                         <Button variant="outline" onClick={() => dialogPageHandler("main")}>بازگشت</Button>
@@ -330,7 +337,7 @@ export default function UserRow({ rowData }: { rowData: UserDto }) {
                             </motion.div>
                         )}
 
-{/* didn't find the query */}
+                        {/* didn't find the query */}
                         {dialogStep === "sendMessage" && (
                             <motion.div
                                 key="sendMessage"
@@ -362,16 +369,28 @@ export default function UserRow({ rowData }: { rowData: UserDto }) {
                                 animate={{ x: 0, opacity: 1 }}
                                 exit={{ x: "100%", opacity: 0 }}
                                 transition={{ duration: 0.4 }}
-                                className="absolute pt-28 px-6 w-full"
-                            >
-                                <div className="py-4 text-slate-500">
-                                    <Label htmlFor="Message" className="text-right"> پیام </Label>
-                                    <Input id="Message" placeholder="پیام را وارد کنید..." className="w-full mt-2" />
-                                </div>
-                                <div className="flex justify-between">
-                                    <Button variant="outline" onClick={() => dialogPageHandler("main")}>بازگشت</Button>
-                                    <Button>ارسال</Button>
-                                </div>
+                                className="absolute pt-28 px-6 w-full" >
+                                <form onSubmit={handleSubmit(UpdateUserInfo)}>
+                                    <input type="hidden" {...register("id")} value={rowData.id.toString()} />
+                                    <div className="py-4 text-slate-500">
+                                        <h2>کاربر
+                                            {' '} {rowData.firstName}{' '}{rowData.lastName ? rowData.lastName : ""}{' '}
+                                            {rowData.isBlocked ? 'فعال' : 'غیرفعال'}
+                                            {' '}گردد؟
+                                        </h2>
+                                    </div>
+                                    <div className="flex justify-between">
+                                        <Button variant="outline" onClick={() => dialogPageHandler("main")}>انصراف</Button>
+                                        <Button
+                                            type="submit"
+                                            {...register("isBlocked")}
+                                            value={rowData.isBlocked ? 'false' : 'true'}
+                                            onClick={() => setInputValues({ ...inputValues, isBlocked: rowData.isBlocked ? 'false' : 'true' })}
+                                            disabled={isPending}>
+                                            تایید
+                                        </Button>
+                                    </div>
+                                </form>
                             </motion.div>
                         )}
 
