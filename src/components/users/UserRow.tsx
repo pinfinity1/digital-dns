@@ -27,8 +27,8 @@ import { Input } from '../ui/input';
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useForm } from "react-hook-form";
-import { UserDto } from "@/client";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { TransactionDto, UserDto } from "@/client";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { getApiV1AgentGetUserAgentQueryKey, putApiV1UserUpdateUserMutation } from "@/client/@tanstack/react-query.gen";
 
@@ -113,6 +113,9 @@ export default function UserRow({ rowData }: { rowData: UserDto }) {
         updateAgencyInfo({ body: data })
     };
 
+    const IncreaseBalance = (data: TransactionDto) => {
+        // updateUserBalance({ body: data })
+    };
 
     const { mutate: updateAgencyInfo, isPending } = useMutation({
         ...putApiV1UserUpdateUserMutation(),
@@ -132,6 +135,25 @@ export default function UserRow({ rowData }: { rowData: UserDto }) {
             toast.error("ویرایش اطلاعات با مشکل مواجه شد")
         },
     });
+
+    // const { mutate: updateUserBalance, isPending } = useMutation({
+    //     ...postApiV1TransactionIncreaseBalanceByUserIdQueryKey({ userId: rowData.id.toString() }),
+    //     onSuccess: (data) => {
+    //         if (typeof data === "string") {
+    //             const parsedData = JSON.parse(data);
+    //             if (parsedData?.isSuccess) {
+    //                 queryClient.invalidateQueries({ queryKey: getApiV1AgentGetUserAgentQueryKey() });
+    //                 // queryClient.invalidateQueries({queryKey: putApiV1UserUpdateUserMutation()});
+    //                 toast.success(parsedData?.message)
+    //                 setDialogStep("main");
+    //             }
+    //         }
+    //     },
+    //     onError: (error) => {
+    //         console.log(error)
+    //         toast.error("ویرایش اطلاعات با مشکل مواجه شد")
+    //     },
+    // });
 
 
     return (
@@ -403,6 +425,7 @@ export default function UserRow({ rowData }: { rowData: UserDto }) {
                                 transition={{ duration: 0.4 }}
                                 className="absolute pt-28 px-6 w-full"
                             >
+                                {/* <form onSubmit={handleSubmit(IncreaseBalance)}> */}
                                 <div className="py-4 text-slate-500">
                                     <Label htmlFor="Message" className="text-right"> پیام </Label>
                                     <Input id="Message" placeholder="پیام را وارد کنید..." className="w-full mt-2" />
@@ -411,6 +434,7 @@ export default function UserRow({ rowData }: { rowData: UserDto }) {
                                     <Button variant="outline" onClick={() => dialogPageHandler("main")}>بازگشت</Button>
                                     <Button>ارسال</Button>
                                 </div>
+                                {/* </form> */}
                             </motion.div>
                         )}
 
